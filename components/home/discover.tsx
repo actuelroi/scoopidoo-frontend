@@ -17,7 +17,7 @@ const Discover = () => {
             <div className="relative">
                 <div className="flex  gap-2 ">
                     <div className="h-full flex flex-col ">
-                        <div className="h-[70vh] w-full lg:w-80 relative">
+                        <div className="h-[45vh] w-full lg:w-80 relative">
                             <Image src={'/Image/discover.avif'} alt="adorable chien en train de manger" fill className="rounded-3xl" />
                         </div>
                         <div className="flex flex-col items-center gap-1 ">
