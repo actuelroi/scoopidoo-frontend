@@ -30,7 +30,7 @@ interface ProductCardProps{
 const ProductCard = ({onClick}:ProductCardProps) => {
     return (
         <div className="h-full flex flex-col  bg-[#014338] rounded-t-3xl rounded-b-xl  group relative cursor-pointer" onClick={onClick}>
-            <div className="h-[50vh] w-full relative ">
+            <div className="h-[40vh] w-full relative ">
                 <Image src={'/Image/discover.avif'} alt="adorable chien en train de manger" fill className="rounded-t-3xl" />
 
             </div>
