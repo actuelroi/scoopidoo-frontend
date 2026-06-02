@@ -23,6 +23,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useCartDrawerStore } from "@/store/carte-drower.store";
 
 
 const instrumentSans = Instrument_Sans({
@@ -36,6 +37,7 @@ const instrumentSans = Instrument_Sans({
 const Navigation = () => {
 
     const [isOpen, setIsOpen] = useState(false)
+    const {onOpen}= useCartDrawerStore()
     return (
         <nav className="flex md:px-12 px-5 py-4 items-center  gap-10 sticky top-0 left-0 right-0 z-50 bg-white ">
             <Logo />
@@ -87,7 +89,7 @@ const Navigation = () => {
                 </div>
                 <h2 className="cursor-pointer text-xs md:text-sm  text-nowrap lg:text-[16px]">Se connecter</h2>
                 <div className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer">
-                    <FaCartShopping className="text-white" />
+                    <FaCartShopping className="text-white" onClick={onOpen}/>
                 </div>
             </div>
 
