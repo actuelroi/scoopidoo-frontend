@@ -22,7 +22,7 @@ const inter = Inter({
 
 const Discover = () => {
     return (
-        <section className="pt-30 px-6 min-h-screen bg-[#DBE6DC] ">
+        <section className="pt-30 lg:px-6 sm:px-2 min-h-screen bg-[#DBE6DC] ">
             <div className="relative">
                 <div className="flex  gap-2 ">
                     <div className="h-full flex flex-col ">
