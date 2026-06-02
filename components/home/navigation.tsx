@@ -24,6 +24,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useCartDrawerStore } from "@/store/carte-drower.store";
+import { Button } from "../ui/button";
 
 
 const instrumentSans = Instrument_Sans({
@@ -42,10 +43,7 @@ const Navigation = () => {
         <nav className="flex md:px-12 px-5 py-4 items-center  gap-10 sticky top-0 left-0 right-0 z-50 bg-white ">
             <Logo />
 
-            <div className={`flex items-center justify-between flex-1 ${instrumentSans.className} ml-3 font-semibold text-[#003E34]`} >
-               
-
-
+            <div className={`flex items-center justify-between flex-1 ${instrumentSans.className}  font-semibold text-[#003E34]`} >
                     <DropdownMenu>
                         <DropdownMenuTrigger className="flex items-center gap-2 z-99" >
                            <h2 className="cursor-pointer text-xs md:text-sm text-nowrap lg:text-[16px]">Nos goutés</h2>
@@ -67,19 +65,6 @@ const Navigation = () => {
                     </DropdownMenu>
 
 
-
-                    
-
-
-
-
-
-                
-
-
-
-
-
                 <RiMenuSearchFill className="lg:hidden cursor-pointer  size-5 md:size-6" onClick={() => setIsOpen(true)} />
                 <div className="hidden lg:flex items-center gap-8 text-xs md:text-sm lg:text-[16px] ">
                     <Link href={'/pourquoi-la-vraie'}>Pourquoi la vrai nourriture</Link>
@@ -88,9 +73,9 @@ const Navigation = () => {
                     <Link href={'/blog'}>Blog</Link>
                 </div>
                 <h2 className="cursor-pointer text-xs md:text-sm  text-nowrap lg:text-[16px]">Se connecter</h2>
-                <div className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer">
-                    <FaCartShopping className="text-white" onClick={onOpen}/>
-                </div>
+                <Button className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer" onClick={onOpen}>
+                    <FaCartShopping className="text-white" />
+                </Button>
             </div>
 
             <Sheet open={isOpen} onOpenChange={setIsOpen} >
