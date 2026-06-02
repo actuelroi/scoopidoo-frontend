@@ -11,9 +11,9 @@ const inriaSans = Inria_Sans({
 
 const ParfaitSection = () => {
     return (
-        <section className=" flex flex-col  mt-60 px-10  ">
-            <div className="grid grid-cols-1 md:grid-cols-2 px-6">
-                <div className="flex  justify-center flex-col w-110  pl-6 rounded-3xl">
+        <section className=" flex flex-col mt-20 lg:mt-60 lg:px-10  ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:px-6">
+                <div className="flex  justify-center flex-col w-full sm:w-90 lg:w-110  lg:pl-6 rounded-3xl">
                     <div className=" w-full h-120 relative">
                         <Image src={'/Image/parfait.png'} alt="adorable chien en train de manger" fill className="rounded-t-3xl" />
                     </div>
@@ -56,7 +56,7 @@ const ParfaitSection = () => {
 
 
                 <div className="flex flex-col gap-3">
-                    <h1 className={`text-5xl mb-10 font-semibold ${inriaSans.className} text-[#005648]`}>Ce qu'il y a de <br /> mieux avec les aliments frais,<br /> c'est que tout est <span className="text-[#10B193]">parfait. </span> </h1>
+                    <h1 className={`text-2xl sm:text-3xl md:text-5xl text-center lg:text-start mb-10 font-semibold ${inriaSans.className} text-[#005648]`}>Ce qu'il y a de <br /> mieux avec les aliments frais,<br /> c'est que tout est <span className="text-[#10B193]">parfait. </span> </h1>
                     <div className="grid grid-cols-2">
                         <div className="flex flex-col gap-5">
 

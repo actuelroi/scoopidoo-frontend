@@ -43,7 +43,7 @@ const HeroCard = () => {
             {cardItem.map((item, i) => (
                 <div
                     key={i}
-                    className="relative h-64 rounded-md p-3 overflow-hidden"
+                    className="relative h-64 rounded-md p-3 "
                     style={{ backgroundColor: item.color }}
                 >
                     <h1 className={`text-white font-semibold relative z-10 ${inriaSans.className}`}>

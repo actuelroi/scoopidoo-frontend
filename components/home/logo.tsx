@@ -8,7 +8,7 @@ const geistSans = Irish_Grover({
 
 const Logo = () => {
     return (
-        <Link href={'/'} className={`text-3xl cursor-pointer ${geistSans.className} text-[#005648]`}>
+        <Link href={'/'} className={`text-lg sm:text-xl md:text-3xl cursor-pointer ${geistSans.className} text-[#005648]`}>
             Scoopidoo
         </Link>
     )
