@@ -33,7 +33,7 @@ const TryScoopidoo = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-5 mt-15 p-8 max-w-6xl mx-auto ">
                 <div className="flex flex-col gap-5 p-5 items-center justify-center">
-                    <h1 className={`text-5xl font-bold text-white mb-6 ${inter.className}`}>
+                    <h1 className={`text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-6 ${inter.className}`}>
                         Amélioration des selles de mon chien en <span className="text-[#10B193]">14 jours</span>
                     </h1>
                   

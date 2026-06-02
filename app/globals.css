@@ -129,10 +129,7 @@
   }
 }
 
-html,
-body {
-  @apply h-full w-full p-0 m-0;
-}
+
 
 html, body 
 :root{

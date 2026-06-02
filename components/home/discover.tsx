@@ -26,7 +26,7 @@ const Discover = () => {
             <div className="relative">
                 <div className="flex  gap-2 ">
                     <div className="h-full flex flex-col ">
-                        <div className="h-[70vh] w-80 relative">
+                        <div className="h-[70vh] w-full lg:w-80 relative">
                             <Image src={'/Image/discover.avif'} alt="adorable chien en train de manger" fill className="rounded-3xl" />
                         </div>
                         <div className="flex flex-col items-center gap-1 ">
@@ -35,7 +35,7 @@ const Discover = () => {
                         </div>
                     </div>
 
-                    <div className="h-full grid grid-cols-4 gap-1 ">
+                    <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 ">
 
                         <div className="h-full flex flex-col  bg-[#014338] rounded-t-3xl rounded-b-xl  group relative ">
                             <div className="h-[50vh] w-full relative ">
