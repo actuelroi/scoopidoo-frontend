@@ -65,6 +65,103 @@ export const productType = defineType({
             }],
         }),
 
+
+        defineField({
+            name: "variants",
+            title: "Product Variants",
+            type: "array",
+            of: [
+                defineArrayMember({
+                    type: "object",
+                    fields: [
+                        {
+                            name: "flavor",
+                            title: "Flavor",
+                            type: "string",
+                        },
+                        {
+                            name: "taille",
+                            title: "Size (kg)",
+                            type: "string",
+                        },
+                        {
+                            name: "price",
+                            title: "Price",
+                            type: "string",
+                            validation: (Rule) => Rule.required().min(0),
+                        },
+                        {
+                            name: "stock",
+                            title: "Stock",
+                            type: "number",
+                            initialValue: 0,
+                        },
+                    ],
+                    preview: {
+                        select: {
+                            flavor: "flavor",
+                            taille: "taille",
+                            price: "price",
+                        },
+                        prepare({ flavor, taille, price }) {
+                            return {
+                                title: `${flavor} - ${taille}`,
+                                subtitle: `${price} €`,
+                            };
+                        },
+                    },
+                }),
+            ],
+        }),
+        defineField({
+            name: "pays",
+            title: "Pays",
+            type: "array",
+            of: [{ type: "string" }],
+            options: {
+                list: [
+                    { title: "France", value: "france" },
+                    { title: "Royaume uni", value: "royaume_uni" },
+                    { title: "Union européenne", value: "union_europeene" },
+                    { title: "Allemagne", value: "allemagne" },
+                ],
+               
+            },
+        }),
+
+        defineField({
+            name: "minimum",
+            title: "Minimum vente",
+            type: "number",
+            description: "Command minimum"
+        }),
+
+
+         defineField({
+            name: "detail",
+            title: "Full Detail",
+            type: "array",
+            of: [
+                {
+                    type: "block",
+                    styles: [
+                        { title: 'Normal', value: 'normal' },
+                        { title: 'H2', value: 'h2' },
+                        { title: 'H3', value: 'h3' },
+                    ],
+                    lists: [{ title: 'Bullet', value: 'bullet' }],
+                    marks: {
+                        decorators: [
+                            { title: 'Strong', value: 'strong' },
+                            { title: 'Emphasis', value: 'em' },
+                        ],
+                    }
+                }
+            ],
+            description: "Detailed product more about the product"
+        }),
+
+
         defineField({
             name: "marque",
             title: "Marque",
@@ -105,22 +202,7 @@ export const productType = defineType({
                
             },
         }),
-        defineField({
-            name: "pays",
-            title: "Pays",
-            type: "array",
-            of: [{ type: "string" }],
-            options: {
-                list: [
-                    { title: "France", value: "france" },
-                    { title: "Royaume uni", value: "royaume_uni" },
-                    { title: "Union européenne", value: "union_europeene" },
-                    { title: "Allemagne", value: "allemagne" },
-                ],
-               
-            },
-        }),
-
+        
         defineField({
             name: "proteines",
             title: "Source de proteine",
@@ -164,6 +246,7 @@ export const productType = defineType({
                     { title: "Fauve", value: "fauve" },
                     { title: "Noir", value: "noir" },
                     { title: "Sevrage", value: "sevrage" },
+                    { title: "Tout type de poil", value: "tout_type_de_poil" },
 
                 ],
                 
@@ -212,7 +295,7 @@ export const productType = defineType({
                     { title: "Agneau", value: "agneau" },
                     { title: "Boeuf", value: "boeuf" },
                     { title: "Canard", value: "canard" },
-                    { title: "Tout type de poil", value: "tout_type_de_poil" },
+                   
                     { title: "Dinde", value: "dinde" },
                     { title: "Gibier", value: "gibier" },
                     { title: "Insectes", value: "insectes" },
@@ -266,78 +349,7 @@ export const productType = defineType({
         }),
 
 
-        defineField({
-            name: "detail",
-            title: "Full Detail",
-            type: "array",
-            of: [
-                {
-                    type: "block",
-                    styles: [
-                        { title: 'Normal', value: 'normal' },
-                        { title: 'H2', value: 'h2' },
-                        { title: 'H3', value: 'h3' },
-                    ],
-                    lists: [{ title: 'Bullet', value: 'bullet' }],
-                    marks: {
-                        decorators: [
-                            { title: 'Strong', value: 'strong' },
-                            { title: 'Emphasis', value: 'em' },
-                        ],
-                    }
-                }
-            ],
-            description: "Detailed product more about the product"
-        }),
-
-        defineField({
-            name: "variants",
-            title: "Product Variants",
-            type: "array",
-            of: [
-                defineArrayMember({
-                    type: "object",
-                    fields: [
-                        {
-                            name: "flavor",
-                            title: "Flavor",
-                            type: "string",
-                        },
-                        {
-                            name: "taille",
-                            title: "Size (kg)",
-                            type: "string",
-                        },
-                        {
-                            name: "price",
-                            title: "Price",
-                            type: "string",
-                            validation: (Rule) => Rule.required().min(0),
-                        },
-                        {
-                            name: "stock",
-                            title: "Stock",
-                            type: "number",
-                            initialValue: 0,
-                        },
-                    ],
-                    preview: {
-                        select: {
-                            flavor: "flavor",
-                            taille: "taille",
-                            price: "price",
-                        },
-                        prepare({ flavor, taille, price }) {
-                            return {
-                                title: `${flavor} - ${taille}`,
-                                subtitle: `${price} €`,
-                            };
-                        },
-                    },
-                }),
-            ],
-        }),
-
+        
         defineField({
             name: "status",
             title: "Product Status",
