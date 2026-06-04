@@ -137,7 +137,7 @@ export const productType = defineType({
         }),
 
 
-         defineField({
+        defineField({
             name: "detail",
             title: "Full Detail",
             type: "array",

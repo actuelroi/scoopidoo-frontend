@@ -5,7 +5,7 @@ import Logo from "./logo"
 
 
 import { Instrument_Sans } from "next/font/google";
-import { ChevronDown, } from "lucide-react";
+import { ChevronDown, User, } from "lucide-react";
 import Link from "next/link";
 import { RiMenuSearchFill } from "react-icons/ri";
 import { useState } from "react";
@@ -52,14 +52,9 @@ const Navigation = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuGroup>
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                <DropdownMenuItem>Profile</DropdownMenuItem>
-                                <DropdownMenuItem>Billing</DropdownMenuItem>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>Team</DropdownMenuItem>
-                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                                <DropdownMenuLabel>Nourriture</DropdownMenuLabel>
+                                <DropdownMenuItem>Gadgets</DropdownMenuItem>
+                                <DropdownMenuItem>Tous</DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -72,7 +67,8 @@ const Navigation = () => {
                     <Link href={'/centre-aide'}>Centre d&apos;aide</Link >
                     <Link href={'/blog'}>Blog</Link>
                 </div>
-                <h2 className="cursor-pointer text-xs md:text-sm  text-nowrap lg:text-[16px]">Se connecter</h2>
+                <User className="size-5 md:hidden" />
+                <h2 className="cursor-pointer text-xs hidden md:block md:text-sm  text-nowrap lg:text-[16px]">Se connecter</h2>
                 <Button className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer" onClick={onOpen}>
                     <FaCartShopping className="text-white" />
                 </Button>
