@@ -7,6 +7,11 @@ import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 
 import { IoChevronBackCircleOutline, IoChevronForwardCircleOutline } from "react-icons/io5";
+import { Product } from '@/sanity.types';
+
+import { urlFor } from '@/sanity/lib/image';
+
+
 
 const instrumentSans = Instrument_Sans({
     weight: '400'
@@ -22,27 +27,51 @@ const inter = Inter({
     weight: '400'
 });
 
-interface ProductCardProps{
-    onClick: ()=>void;
+
+
+
+interface ProductCardProps {
+    data: Product,
+    onClick:()=> void;
 }
 
+const ProductCard = ({ data ,onClick}: ProductCardProps) => {
 
-const ProductCard = ({onClick}:ProductCardProps) => {
+    const firstVariant = data.variants?.[0];
+    const image = data.images?.[0];
     return (
-        <div className="h-full flex flex-col  bg-[#014338] rounded-t-3xl rounded-b-xl  group relative cursor-pointer" onClick={onClick}>
-            <div className="h-[40vh] w-full relative ">
-                <Image src={'/Image/discover.avif'} alt="adorable chien en train de manger" fill className="rounded-t-3xl" />
-
+        <div className="h-full flex flex-col  bg-[#014338] rounded-t-3xl rounded-b-xl  group  cursor-pointer" onClick={onClick} >
+            <div className="relative aspect-4/5 w-full overflow-hidden rounded-t-3xl bg-white" >
+                <Image
+                    src={
+                        image?.asset
+                            ? urlFor(image)
+                                .width(800)
+                                .height(1000)
+                                .auto("format")
+                                .quality(80)
+                                .url()
+                            : "/Image/discover.avif"
+                    }
+                    alt={image?.alt ?? data.name ?? "Product"}
+                    fill
+                    priority={false}
+                    sizes="(max-width: 640px) 100vw,
+           (max-width: 1024px) 50vw,
+           25vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <IoChevronBackCircleOutline className="hidden group-hover:block absolute top-1/3 left-2 size-6 text-gray-300 cursor-pointer" />
+                <IoChevronForwardCircleOutline className="hidden group-hover:block absolute top-1/3 right-2 size-6 text-gray-300 cursor-pointer" />
             </div>
-            <IoChevronBackCircleOutline className="hidden group-hover:block absolute top-1/3 left-2 size-6 text-gray-300 cursor-pointer" />
-            <IoChevronForwardCircleOutline className="hidden group-hover:block absolute top-1/3 right-2 size-6 text-gray-300 cursor-pointer" />
-            <div className="flex flex-col items-start gap-3 mt-2 p-3">
-                <p className={`text-start text-white text-sm ${instrumentSans.className}`}>
-                    Croquettes <span className="font-bold">Chewy</span>  Made Digestive Health à l'agneau et au riz brun pour chiens adultes, sac de 18 kg
+
+           <div className="flex flex-col flex-1 p-3">
+                <p className={`text-start text-white text-sm line-clamp-3 min-h-18  ${instrumentSans.className}`}>
+                    {data.description}
                 </p>
 
                 <p className={`text-start text-white text-sm ${JosefinSans.className}`}>
-                    Par <span className="text-[#0FAD8F] font-semibold">Chewy</span>
+                    Par <span className="text-[#0FAD8F] font-semibold">{data.marque?.[0]}</span>
                 </p>
 
                 <div className="flex item-center gap-2">
@@ -51,12 +80,14 @@ const ProductCard = ({onClick}:ProductCardProps) => {
                     <Star className="size-3 font-semibold text-yellow-400" />
                     <Star className="size-3 font-semibold text-yellow-400" />
                     <p className={`text-start text-white text-sm ${Indie.className}`}>
-                        323
+                        {data.reviewCount}
                     </p>
                 </div>
 
                 <p className={`text-start text-white text-xl font-bold ${JosefinSans.className} pl-2`}>
-                    4.15 €
+                    
+                        {firstVariant?.price ?? "--"} €
+                    
                 </p>
 
 

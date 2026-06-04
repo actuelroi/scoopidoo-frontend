@@ -2,6 +2,7 @@
 import { Inria_Sans } from "next/font/google";
 import { ProductList } from "../product-detail/product-list";
 import { Filtered } from "./fitered";
+import { Product } from "@/sanity.types";
 
 
 
@@ -12,12 +13,13 @@ const inria = Inria_Sans({
 });
 
 
+interface ProductProps{
+    product: Product[]
+}
 
-export const FilterSearch = () => {
 
 
-    
-
+export const FilterSearch = ({product}:ProductProps) => {
     return (
         <section className={`lg:px-8 px-2 ${inria.className}`}>
 
@@ -26,7 +28,7 @@ export const FilterSearch = () => {
                     <Filtered/>
                 </div>
 
-                <ProductList/>
+                <ProductList data={product}/>
             </div>
 
         </section>

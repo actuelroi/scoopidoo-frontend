@@ -1,17 +1,23 @@
 'use client'
 
 import Image from "next/image"
-import { Instrument_Sans, Josefin_Sans, Indie_Flower, Inter } from "next/font/google";
+
 
 import { FaCircleChevronRight } from "react-icons/fa6";
 
 import ProductCard from "../product-detail/product-card";
 import { useRouter } from "next/navigation";
+import { Product } from "@/sanity.types";
 
 
-const Discover = () => {
+interface DiscoverProps{
+    product: Product[]
+}
+
+const Discover = ({product}:DiscoverProps) => {
 
     const router = useRouter()
+
     return (
         <section className="pt-30 lg:px-6 px-1 sm:px-2 min-h-screen bg-[#DBE6DC] ">
             <div className="relative">
@@ -29,15 +35,15 @@ const Discover = () => {
                     <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 ">
 
                         {
-                            [1, 2, 3, 4].map((item) => (
-                                <ProductCard key={item} onClick={()=>router.push('/product-detail')}/>
+                            product.map((item:Product,i) => (
+                                <ProductCard key={i} data={item} onClick={()=>router.push('/product-search')}/>
                             ))
                         }
 
 
                     </div>
                 </div>
-                <FaCircleChevronRight className=" absolute right-4 top-1/2 bottom-2/3 size-15 text-white cursor-pointer" />
+                <FaCircleChevronRight className=" absolute right-4 top-1/2 bottom-2/3 size-15 text-white cursor-pointer" onClick={()=>router.push('/product-search')} />
             </div>
 
         </section>

@@ -9,9 +9,14 @@ import { useState } from "react"
 import { Sheet, SheetContent, SheetTitle } from "../ui/sheet"
 import Logo from "../home/logo"
 import { Filtered } from "./fitered"
+import { Product } from "@/sanity.types"
 
 
-const SearchProduct = () => {
+interface SearchProductProps{
+    product: Product[]
+}
+
+const SearchProduct = ({product}:SearchProductProps) => {
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -25,7 +30,7 @@ const SearchProduct = () => {
         </div>
         <RiFilter3Fill className="size-6 lg:hidden cursor-pointer" onClick={() => setIsOpen(true)} />
       </div>
-      <FilterSearch />
+      <FilterSearch product={product} />
 
       <Sheet open={isOpen} onOpenChange={setIsOpen} >
         <SheetContent className="bg-background flex flex-col gap-10 items-start justify-start z-999 p-6" >
