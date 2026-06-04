@@ -5,11 +5,12 @@ import { Input } from "../ui/input"
 import { FilterSearch } from "./filter-search"
 
 import { RiFilter3Fill } from "react-icons/ri"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Sheet, SheetContent, SheetTitle } from "../ui/sheet"
 import Logo from "../home/logo"
-import { Filtered } from "./fitered"
+
 import { Product } from "@/sanity.types"
+import SelectSearch from "./select-search"
 
 
 interface SearchProductProps{
@@ -19,7 +20,30 @@ interface SearchProductProps{
 const SearchProduct = ({product}:SearchProductProps) => {
 
   const [isOpen, setIsOpen] = useState(false)
-
+   
+  const [selected, setSelected] = useState<string[]>([]);
+  
+      const filteredProducts = useMemo(() => {
+          if (selected.length === 0) return product;
+  
+          return product.filter((item) => {
+              const values = [
+                  ...(item.marque ?? []),
+                  ...(item.age ?? []),
+                  ...(item.proteines ?? []),
+                  ...(item.regimes ?? []),
+                  ...(item.poils ?? []),
+                  ...(item.taille_du_chien ?? []),
+                  ...(item.types_d_aliments ?? []),
+                  ...(item.saveur ?? []),
+                  ...(item.benefices_sante ?? []),
+              ];
+  
+              return selected.some((filter) => values.includes(filter));
+          });
+      }, [product, selected]);
+  
+  
 
   return (
     <section className="w-full">
@@ -30,7 +54,7 @@ const SearchProduct = ({product}:SearchProductProps) => {
         </div>
         <RiFilter3Fill className="size-6 lg:hidden cursor-pointer" onClick={() => setIsOpen(true)} />
       </div>
-      <FilterSearch product={product} />
+      <FilterSearch product={filteredProducts} />
 
       <Sheet open={isOpen} onOpenChange={setIsOpen} >
         <SheetContent className="bg-background flex flex-col gap-10 items-start justify-start z-999 p-6" >
@@ -39,7 +63,10 @@ const SearchProduct = ({product}:SearchProductProps) => {
           </SheetTitle>
           <Logo />
           <div className="flex flex-col gap-5 w-full">
-            <Filtered/>
+           <SelectSearch
+                        selected={selected}
+                        setSelected={setSelected}
+                    />
           </div>
         </SheetContent>
       </Sheet>
