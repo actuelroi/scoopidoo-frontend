@@ -20,11 +20,11 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useCartDrawerStore } from "@/store/carte-drower.store";
 import { Button } from "../ui/button";
+import useCartStore from "@/store/carte.store";
 
 
 const instrumentSans = Instrument_Sans({
@@ -38,26 +38,27 @@ const instrumentSans = Instrument_Sans({
 const Navigation = () => {
 
     const [isOpen, setIsOpen] = useState(false)
-    const {onOpen}= useCartDrawerStore()
+    const { onOpen } = useCartDrawerStore()
+    const { items } = useCartStore()
     return (
         <nav className="flex md:px-12 px-5 py-4 items-center  gap-10 sticky top-0 left-0 right-0 z-50 bg-white ">
             <Logo />
 
             <div className={`flex items-center justify-between flex-1 ${instrumentSans.className}  font-semibold text-[#003E34]`} >
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className="flex items-center gap-2 z-99" >
-                           <h2 className="cursor-pointer text-xs md:text-sm text-nowrap lg:text-[16px]">Nos goutés</h2>
-                    <ChevronDown className="text-black size-3 sm:size-5" />
+                <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-2 z-99" >
+                        <h2 className="cursor-pointer text-xs md:text-sm text-nowrap lg:text-[16px]">Nos goutés</h2>
+                        <ChevronDown className="text-black size-3 sm:size-5" />
 
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuGroup>
-                                <DropdownMenuLabel>Nourriture</DropdownMenuLabel>
-                                <DropdownMenuItem>Gadgets</DropdownMenuItem>
-                                <DropdownMenuItem>Tous</DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel>Nourriture</DropdownMenuLabel>
+                            <DropdownMenuItem>Gadgets</DropdownMenuItem>
+                            <DropdownMenuItem>Tous</DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
 
 
                 <RiMenuSearchFill className="lg:hidden cursor-pointer  size-5 md:size-6" onClick={() => setIsOpen(true)} />
@@ -69,9 +70,17 @@ const Navigation = () => {
                 </div>
                 <User className="size-5 md:hidden" />
                 <h2 className="cursor-pointer text-xs hidden md:block md:text-sm  text-nowrap lg:text-[16px]">Se connecter</h2>
-                <Button className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer" onClick={onOpen}>
-                    <FaCartShopping className="text-white" />
-                </Button>
+                <div className="relative" onClick={onOpen}>
+                    <Button className="p-2 bg-[#FF886B] rounded-2xl cursor-pointer" >
+                        <FaCartShopping className="text-white" />
+                    </Button>
+                    {items.length > 0 && (
+                        <div className="absolute top-0 -right-2 text-white text-[10px] bg-[#003E34] cursor-pointer px-1.5 py-0.5 rounded-full">
+                          {items.length}
+                        </div>
+                    )}
+                </div>
+
             </div>
 
             <Sheet open={isOpen} onOpenChange={setIsOpen} >
