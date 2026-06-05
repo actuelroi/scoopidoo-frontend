@@ -11,10 +11,13 @@ import Image from "next/image";
 
 import { Inria_Sans, Josefin_Sans } from "next/font/google";
 import { Separator } from "../ui/separator";
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"
 import useCartStore from "@/store/carte.store";
 import { urlFor } from "@/sanity/lib/image";
 import { DeliveredDate } from "@/lib/utils";
+import { useState } from "react";
+import { createCheckoutSession, Metadata } from "@/actions/checkout";
+import { toast } from "sonner";
 
 const inria = Inria_Sans({
     weight: '400'
@@ -27,22 +30,45 @@ const josefin = Josefin_Sans({
 
 
 
-
-const instrumentSerif = Instrument_Sans({
-    weight: "400"
-});
-
 export function CarteDrawer() {
 
     const { isOpen, onClose, onOpen } = useCartDrawerStore()
+    const [isLoading, setIsLoading] = useState(false)
 
     const { deleteCartProduct, addItem, getGroupedItems, getItemCount, getTotalPrice, items, removeItem, resetCart } = useCartStore()
 
-    console.log("Items", items)
-    console.log("GetTotalPrice", getTotalPrice())
-    console.log("getGroupItems", getGroupedItems())
+    const groupedItems = useCartStore((state) => state.getGroupedItems());
 
 
+    const handleCheckout = async () => {
+        setIsLoading(true);
+        try {
+            const metadata: Metadata = {
+                orderNumber: crypto.randomUUID(),
+                customerName: "Test-name",
+                customerEmail: "Testemail@email.com",
+                userId: 'Test-user-ID',
+            };
+            const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl;
+            }
+        } catch (error) {
+            console.error("Error creating checkout session:", error);
+            toast.error('Paiement echoue , veuillez re-essayer plus tard!')
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    const handleResetCart = () => {
+        const confirmed = window.confirm("Etes vous sure de vouloir reinstialiser votre cart?");
+        if (confirmed) {
+            resetCart();
+            toast.success("Votre cart a ete reinstialiser avec succes!");
+        }
+    };
 
 
 
@@ -192,7 +218,9 @@ export function CarteDrawer() {
                                                 >
                                                     Supprimer
                                                 </Button>
+                                                <Separator />
                                             </div>
+
                                         </div>
                                     );
                                 })
@@ -215,9 +243,15 @@ export function CarteDrawer() {
                             </p>
                             <IoMdInformationCircle className="size-4" />
                         </div>
-                        <Button>Passer au paiement</Button>
+                        <Button
+                            onClick={handleCheckout}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Traitement" : " Passer au paiement"}
+                           
+                        </Button>
 
-                        <Button variant="outline" onClick={resetCart}>Vider le panier</Button>
+                        <Button variant="outline" onClick={handleResetCart}>Vider le panier</Button>
 
                     </SheetFooter>
                 )}
