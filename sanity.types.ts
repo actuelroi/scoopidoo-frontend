@@ -283,8 +283,9 @@ export type PRODUCTS_QUERY_RESULT = Array<{
 
 // Source: sanity/helpers/index.ts
 // Variable: FOUR_PRODUCTS_QUERY
-// Query: *[_type == "product"] | order(name asc)[0...4]{  description,  images,  marque,  reviewCount,  slug,  variants,  }
+// Query: *[_type == "product"] | order(name asc)[0...4]{  _id,  description,  images,  marque,  reviewCount,  slug,  variants,  }
 export type FOUR_PRODUCTS_QUERY_RESULT = Array<{
+  _id: string;
   description: string | null;
   images: Array<{
     asset?: SanityImageAssetReference;
@@ -578,7 +579,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type=="product"] | order(name asc)': PRODUCTS_QUERY_RESULT;
-    '\n  *[_type == "product"] | order(name asc)[0...4]{\n  description,\n  images,\n  marque,\n  reviewCount,\n  slug,\n  variants,\n  }': FOUR_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product"] | order(name asc)[0...4]{\n  _id,\n  description,\n  images,\n  marque,\n  reviewCount,\n  slug,\n  variants,\n  }': FOUR_PRODUCTS_QUERY_RESULT;
     '\n    *[\n      _type == "product" &&\n      _id != $productId &&\n      (\n        count((marque)[@ in $marque]) > 0 ||\n        count((pays)[@ in $pays]) > 0 ||\n        count((age)[@ in $age]) > 0\n      )\n    ][0...4]\n  ': SIMILAR_PRODUCTS_QUERY_RESULT;
     '*[_type == "product" && name match $searchParam] | order(name asc)': PRODUCT_SEARCH_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug] | order(name asc) [0]': PRODUCT_BY_ID_QUERY_RESULT;

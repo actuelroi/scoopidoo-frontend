@@ -11,10 +11,9 @@ interface SelectSearchProps {
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const SelectSearch = ({
-  selected,
-  setSelected,
-}: SelectSearchProps) => {
+const SelectSearch = ({selected,setSelected}: SelectSearchProps) => {
+
+  
   const toggleValue = (value: string) => {
     setSelected((prev) =>
       prev.includes(value)

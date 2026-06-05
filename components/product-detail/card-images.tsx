@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown, HeartIcon, MinusCircle, PlusCircle, Star } from "lucide-react"
+import { ChevronDown, MinusCircle, PlusCircle, Star } from "lucide-react"
 import Image from "next/image"
 
 import { Inria_Sans, Josefin_Sans, Indie_Flower } from "next/font/google";
@@ -9,6 +9,9 @@ import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import useCartStore from "@/store/carte.store";
+import { toast } from "sonner";
+import { useCartDrawerStore } from "@/store/carte-drower.store";
 
 const inria = Inria_Sans({
     weight: '400'
@@ -76,6 +79,21 @@ export const CardImages = ({ data }: CardImageProps) => {
         ).values()
     );
 
+    const { addItem } = useCartStore();
+
+    const {onOpen}=useCartDrawerStore()
+
+
+
+
+
+
+    const selectedVariant =
+        data.variants?.find(
+            (v) =>
+                (flavor ? v.flavor === flavor : true) &&
+                (taille ? v.taille === taille : true)
+        ) ?? firstVariant;
 
 
     return (
@@ -202,13 +220,47 @@ export const CardImages = ({ data }: CardImageProps) => {
                     </div>
 
                     <div className={cn("flex flex-row  items-center gap-6", show ? 'w-full' : 'w-0')}>
-                        <MinusCircle className="size-4 text-gray-400 cursor-pointer" onClick={remove} />
+                        <button
+                            onClick={() => {
+                                
 
-                        <PlusCircle className="size-4 text-gray-400 cursor-pointer" onClick={add} />
+                                remove();
+                            }}
+                        >
+                            <MinusCircle className="size-4 text-gray-400 cursor-pointer" onClick={remove} />
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                
+                                add()
+                            }}
+                        >
+                            <PlusCircle className="size-4 text-gray-400 cursor-pointer" />
+                        </button>
+
                     </div>
 
                     <div className={`flex items-center justify-center gap-3 mt-4  `}>
-                        <button className="w-full py-3 rounded-2xl bg-[#10B193] text-white font-medium max-w-sm">
+                        <button
+                            onClick={() => {
+                                if (!selectedVariant) return;
+
+                                addItem(
+                                    data,
+                                    {
+                                        _key: selectedVariant._key,
+                                        flavor: selectedVariant.flavor,
+                                        taille: selectedVariant.taille,
+                                        price: selectedVariant.price,
+                                    },
+                                    quantity
+                                );
+                                toast.success(`${data.name} ajouter avec success!`)
+                                onOpen()
+                            }}
+                            className="w-full py-3 cursor-pointer rounded-2xl bg-[#10B193] text-white font-medium max-w-sm"
+                        >
                             Ajouter au panier
                         </button>
                     </div>

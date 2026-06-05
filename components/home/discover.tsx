@@ -21,7 +21,7 @@ const Discover = ({product}:DiscoverProps) => {
     return (
         <section className="pt-30 lg:px-6 px-1 sm:px-2 min-h-screen bg-[#DBE6DC] ">
             <div className="relative">
-                <div className="flex  gap-2 ">
+                <div className="flex flex-col md:flex-row  gap-2 ">
                     <div className="h-full flex flex-col ">
                         <div className="h-[45vh] w-full lg:w-80 relative">
                             <Image src={'/Image/discover.avif'} alt="adorable chien en train de manger" fill className="rounded-3xl" />

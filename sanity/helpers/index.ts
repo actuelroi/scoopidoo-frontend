@@ -17,6 +17,7 @@ export const getAllProducts = async () => {
 export const getFourProducts = async () => {
   const FOUR_PRODUCTS_QUERY = defineQuery(`
   *[_type == "product"] | order(name asc)[0...4]{
+  _id,
   description,
   images,
   marque,
