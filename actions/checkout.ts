@@ -129,7 +129,7 @@ export async function createCheckoutSession(
         orderNumber: metadata.orderNumber,
         customerName: metadata.customerName,
         customerEmail: metadata.customerEmail,
-        clerkUserId: metadata.userId,
+        userId: metadata.userId,
         cart: JSON.stringify(
           items.map((item) => ({
             productId: item.product._id,

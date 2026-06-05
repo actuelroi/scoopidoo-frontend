@@ -1,6 +1,7 @@
 
-import { backendClient } from "@/lib/backendClient";
+
 import stripe from "@/lib/stripe";
+import { backendClient } from "@/sanity/lib/backendClient";
 
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -62,12 +63,12 @@ export async function POST(req: NextRequest) {
         const invoice = session.invoice
             ? await stripe.invoices.retrieve(session.invoice as string)
             : null;
-        console.log("session", session, "invoice", invoice);
+
 
         try {
-            //await createOrderInSanity(session, invoice);
-            const order = await createOrderInSanity(session, invoice);;
-            console.log("Order created in Sanity:", order);
+            await createOrderInSanity(session, invoice);
+            // const order = await createOrderInSanity(session, invoice);;
+            // console.log("Order created in Sanity:", order);
         } catch (error) {
             console.error("Error creating order in sanity:", error);
             return NextResponse.json(
@@ -106,7 +107,9 @@ async function createOrderInSanity(
         cart,
     } = session.metadata as CheckoutMetadata;
 
-    const lineItemsWithProduct = await stripe.checkout.sessions.listLineItems(
+    const shipping = session.customer_details?.address;
+
+     await stripe.checkout.sessions.listLineItems(
         id,
         { expand: ["data.price.product"] }
     );
@@ -142,22 +145,40 @@ async function createOrderInSanity(
 
     const order = await backendClient.create({
         _type: "order",
+
         orderNumber,
         stripeCheckoutSessionId: id,
         stripePaymentIntentId: payment_intent,
+
         customerName,
-        stripeCustomerId: customerEmail,
-        clerkUserId: userId,
         email: customerEmail,
+        userId: userId,
+
+        phoneNumber: session.customer_details?.phone || "",
+
+        shippingAddress: {
+            name: session.customer_details?.name || "",
+            line1: shipping?.line1 || "",
+            line2: shipping?.line2 || "",
+            city: shipping?.city || "",
+            postalCode: shipping?.postal_code || "",
+            state: shipping?.state || "",
+            country: shipping?.country || "",
+        },
+
+        stripeCustomerId: String(session.customer),
         currency,
-        amountDiscount: total_details?.amount_discount
-            ? total_details.amount_discount / 100
-            : 0,
+        amountDiscount:
+            total_details?.amount_discount
+                ? total_details.amount_discount / 100
+                : 0,
 
         products: sanityProducts,
+
         totalPrice: amount_total ? amount_total / 100 : 0,
         status: "paid",
         orderDate: new Date().toISOString(),
+
         invoice: invoice
             ? {
                 id: invoice.id,
