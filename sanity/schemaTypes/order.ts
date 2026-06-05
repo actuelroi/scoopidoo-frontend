@@ -1,11 +1,11 @@
 import { ShoppingBasketIcon } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
-export const orderType= defineType({
+export const orderType = defineType({
   name: "order",
   title: "Order",
   type: "document",
-   icon: ShoppingBasketIcon,
+  icon: ShoppingBasketIcon,
 
   fields: [
     defineField({
@@ -39,6 +39,51 @@ export const orderType= defineType({
     }),
 
     defineField({
+      name: "phoneNumber",
+      title: "Phone Number",
+      type: "string",
+    }),
+
+    defineField({
+      name: "shippingAddress",
+      title: "Shipping Address",
+      type: "object",
+      fields: [
+        {
+          name: "name",
+          title: "Recipient Name",
+          type: "string",
+        },
+        {
+          name: "line1",
+          title: "Address Line 1",
+          type: "string",
+        },
+        {
+          name: "line2",
+          title: "Address Line 2",
+          type: "string",
+        },
+        {
+          name: "city",
+          type: "string",
+        },
+        {
+          name: "postalCode",
+          type: "string",
+        },
+        {
+          name: "state",
+          type: "string",
+        },
+        {
+          name: "country",
+          type: "string",
+        },
+      ],
+    }),
+
+    defineField({
       name: "currency",
       type: "string",
     }),
@@ -62,8 +107,16 @@ export const orderType= defineType({
           { title: "Pending", value: "pending" },
           { title: "Cancelled", value: "cancelled" },
           { title: "Refunded", value: "refunded" },
+          { title: "Shipped", value: "shipped" },
+          { title: "Delivered", value: "delivered" },
         ],
       },
+    }),
+
+    defineField({
+      name: "stripeCustomerId",
+      title: "Stripe Customer ID",
+      type: "string",
     }),
 
     defineField({
@@ -74,43 +127,35 @@ export const orderType= defineType({
     defineField({
       name: "products",
       type: "array",
-
       of: [
         {
           type: "object",
-
           fields: [
             {
               name: "product",
               type: "reference",
               to: [{ type: "product" }],
             },
-
             {
               name: "variantKey",
               type: "string",
             },
-
             {
               name: "flavor",
               type: "string",
             },
-
             {
               name: "taille",
               type: "string",
             },
-
             {
               name: "unitPrice",
               type: "number",
             },
-
             {
               name: "quantity",
               type: "number",
             },
-
             {
               name: "totalPrice",
               type: "number",
@@ -123,7 +168,6 @@ export const orderType= defineType({
     defineField({
       name: "invoice",
       type: "object",
-
       fields: [
         {
           name: "id",
