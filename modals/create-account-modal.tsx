@@ -34,6 +34,8 @@ export const CreateAccountModal = () => {
     };
 
 
+    console.log("modal open:", isOpen);
+
 
     const form = useForm<z.infer<typeof createUserSchema>>({
         resolver: zodResolver(createUserSchema),
@@ -76,7 +78,7 @@ export const CreateAccountModal = () => {
         }
     }
 
-
+  console.log("modal open:", isOpen);
 
     return (
         <AuthModal

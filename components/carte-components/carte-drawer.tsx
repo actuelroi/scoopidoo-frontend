@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button"
 
 import { useCartDrawerStore } from "@/store/carte-drower.store"
-import { ChevronDown, X } from "lucide-react"
-import { Instrument_Sans } from "next/font/google";
+import {  Loader,  } from "lucide-react"
+
 import { IoMdInformationCircle } from "react-icons/io";
 
 import Image from "next/image";
@@ -15,9 +15,12 @@ import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "../ui
 import useCartStore from "@/store/carte.store";
 import { urlFor } from "@/sanity/lib/image";
 import { DeliveredDate } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createCheckoutSession, Metadata } from "@/actions/checkout";
 import { toast } from "sonner";
+import { Session } from "@/lib/session";
+
+import { useCreateStore } from "@/store/create-account.store";
 
 const inria = Inria_Sans({
     weight: '400'
@@ -33,7 +36,12 @@ const josefin = Josefin_Sans({
 export function CarteDrawer() {
 
     const { isOpen, onClose, onOpen } = useCartDrawerStore()
+    const { onOpen:LogOpen } = useCreateStore()
     const [isLoading, setIsLoading] = useState(false)
+
+    const [session, setSession] = useState<Session | null>(null);
+    const [loading, setLoading] = useState(true);
+
 
     const { deleteCartProduct, addItem, getGroupedItems, getItemCount, getTotalPrice, items, removeItem, resetCart } = useCartStore()
 
@@ -41,13 +49,18 @@ export function CarteDrawer() {
 
 
     const handleCheckout = async () => {
+        
+        if (!loading && !session) {
+           LogOpen();
+           return
+        }
         setIsLoading(true);
         try {
             const metadata: Metadata = {
                 orderNumber: crypto.randomUUID(),
-                customerName: "Test-name",
-                customerEmail: "Testemail@email.com",
-                userId: 'Test-user-ID',
+                customerName:  session?.user.name || "Not-found-in-session",
+                customerEmail: session?.user.email || 'email-not-provided',
+                userId: session?.user.id || 'user-ID-not-provided',
             };
             const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
             if (checkoutUrl) {
@@ -70,7 +83,25 @@ export function CarteDrawer() {
         }
     };
 
+    useEffect(() => {
+        fetch("/api/session")
+            .then((res) => res.json())
+            .then((data) => {
+                setSession(data);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
+
+    if(loading){
+        return (
+            <div className="flex items-center justify-center ">
+                  <Loader className="size-4" />
+            </div>
+        )
+    }
 
 
     return (
@@ -248,7 +279,7 @@ export function CarteDrawer() {
                             disabled={isLoading}
                         >
                             {isLoading ? "Traitement" : " Passer au paiement"}
-                           
+
                         </Button>
 
                         <Button variant="outline" onClick={handleResetCart}>Vider le panier</Button>
