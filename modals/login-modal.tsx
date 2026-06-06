@@ -1,3 +1,4 @@
+'use client'
 
 import { Input } from "@/components/ui/input";
 import { AuthModal } from "./auth-modal";
@@ -21,6 +22,8 @@ import { useRouter } from "next/navigation";
 export const LoginModal = () => {
 
     const { onOpen } = useCreateStore()
+
+    const router = useRouter()
 
     const { isOpen, onClose } = useLogStore()
   
@@ -57,13 +60,15 @@ export const LoginModal = () => {
 
             const {message, ...payload} = response.data
 
-            console.log('payload',payload)
+             
 
             await createSession(payload)
 
             console.log('response', response)
             toast.success(response.data.message)
+
             onClose()
+            router.refresh()
             window.location.reload();
 
 

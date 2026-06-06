@@ -1,3 +1,6 @@
+'use client'
+
+
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
@@ -34,7 +37,12 @@ export const AuthModal = ({ children, next, subtile, title, isOpen, onClose, cha
 
     return (
 
-        <Dialog onOpenChange={onClose} open={isOpen}>
+        <Dialog
+            open={isOpen}
+            onOpenChange={(open) => {
+                if (!open) onClose();
+            }}
+        >
             <DialogContent className={`flex   flex-col  pt-12 min-h-[60vh] gap-4 bg-[#10B193] ${Inria.className}`} disableOutsideClose>
                 <DialogTitle className={`p-4 text-white  text-xl text-center`}>
                     {title}
