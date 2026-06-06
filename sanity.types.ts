@@ -15,6 +15,64 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type ProductReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "product";
+};
+
+export type Order = {
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderNumber?: string;
+  stripeCheckoutSessionId?: string;
+  stripePaymentIntentId?: string;
+  customerName?: string;
+  email?: string;
+  userId?: string;
+  phoneNumber?: string;
+  shippingAddress?: {
+    name?: string;
+    line1?: string;
+    line2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+  };
+  currency?: string;
+  totalPrice?: number;
+  amountDiscount?: number;
+  status?:
+    | "paid"
+    | "pending"
+    | "cancelled"
+    | "refunded"
+    | "shipped"
+    | "delivered";
+  stripeCustomerId?: string;
+  orderDate?: string;
+  products?: Array<{
+    product?: ProductReference;
+    variantKey?: string;
+    flavor?: string;
+    taille?: string;
+    unitPrice?: number;
+    quantity?: number;
+    totalPrice?: number;
+    _key: string;
+  }>;
+  invoice?: {
+    id?: string;
+    number?: string;
+    hosted_invoice_url?: string;
+  };
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -203,6 +261,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ProductReference
+  | Order
   | SanityImageAssetReference
   | Product
   | SanityImageCrop
@@ -507,8 +567,67 @@ export type SALE_QUERY_RESULT = Array<never>;
 
 // Source: sanity/helpers/index.ts
 // Variable: MY_ORDERS_QUERY
-// Query: *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {      _id,      orderNumber,      stripeCheckoutSessionId,      stripeCustomerId,      clerkUserId,      customerName,      email,      totalPrice,      currency,      status,      orderDate,      shippingAddress {        name,        line1,        line2,        city,        state,        postal_code,        country,        phone      },      shippingMethod,      shippingCost,      amountDiscount,      products[] {        _key,        quantity,        selectedSize,        selectedColor,        selectedShoesSize,        unitPrice,        price,        product->{          _id,          name,          images,          price,          currency,          slug        }      },      invoice {        id,        number,        hosted_invoice_url      }    }
-export type MY_ORDERS_QUERY_RESULT = Array<never>;
+// Query: *[_type == "order" && userId == $userId]  | order(orderDate desc) {    _id,    orderNumber,    stripeCheckoutSessionId,    stripePaymentIntentId,    stripeCustomerId,    customerName,    email,    userId,    totalPrice,    currency,    status,    orderDate,    phoneNumber,    shippingAddress {      name,      line1,      line2,      city,      postalCode,      state,      country    },    amountDiscount,    products[] {      _key,      variantKey,      flavor,      taille,      quantity,      unitPrice,      totalPrice,      product->{        _id,        name,        images,        slug      }    },    invoice {      id,      number,      hosted_invoice_url    }  }
+export type MY_ORDERS_QUERY_RESULT = Array<{
+  _id: string;
+  orderNumber: string | null;
+  stripeCheckoutSessionId: string | null;
+  stripePaymentIntentId: string | null;
+  stripeCustomerId: string | null;
+  customerName: string | null;
+  email: string | null;
+  userId: string | null;
+  totalPrice: number | null;
+  currency: string | null;
+  status:
+    | "cancelled"
+    | "delivered"
+    | "paid"
+    | "pending"
+    | "refunded"
+    | "shipped"
+    | null;
+  orderDate: string | null;
+  phoneNumber: string | null;
+  shippingAddress: {
+    name: string | null;
+    line1: string | null;
+    line2: string | null;
+    city: string | null;
+    postalCode: string | null;
+    state: string | null;
+    country: string | null;
+  } | null;
+  amountDiscount: number | null;
+  products: Array<{
+    _key: string;
+    variantKey: string | null;
+    flavor: string | null;
+    taille: string | null;
+    quantity: number | null;
+    unitPrice: number | null;
+    totalPrice: number | null;
+    product: {
+      _id: string;
+      name: string | null;
+      images: Array<{
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        _key: string;
+      }> | null;
+      slug: Slug | null;
+    } | null;
+  }> | null;
+  invoice: {
+    id: string | null;
+    number: string | null;
+    hosted_invoice_url: string | null;
+  } | null;
+}>;
 
 // Source: sanity/helpers/index.ts
 // Variable: PRODUCTS_BY_DAY_QUERY
@@ -584,7 +703,7 @@ declare module "@sanity/client" {
     '*[_type == "product" && name match $searchParam] | order(name asc)': PRODUCT_SEARCH_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug] | order(name asc) [0]': PRODUCT_BY_ID_QUERY_RESULT;
     "*[_type == 'sale'] | order(name asc)": SALE_QUERY_RESULT;
-    '\n    *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {\n      _id,\n      orderNumber,\n      stripeCheckoutSessionId,\n      stripeCustomerId,\n      clerkUserId,\n      customerName,\n      email,\n      totalPrice,\n      currency,\n      status,\n      orderDate,\n      shippingAddress {\n        name,\n        line1,\n        line2,\n        city,\n        state,\n        postal_code,\n        country,\n        phone\n      },\n      shippingMethod,\n      shippingCost,\n      amountDiscount,\n      products[] {\n        _key,\n        quantity,\n        selectedSize,\n        selectedColor,\n        selectedShoesSize,\n        unitPrice,\n        price,\n        product->{\n          _id,\n          name,\n          images,\n          price,\n          currency,\n          slug\n        }\n      },\n      invoice {\n        id,\n        number,\n        hosted_invoice_url\n      }\n    }\n  ': MY_ORDERS_QUERY_RESULT;
+    '\n  *[_type == "order" && userId == $userId]\n  | order(orderDate desc) {\n    _id,\n    orderNumber,\n    stripeCheckoutSessionId,\n    stripePaymentIntentId,\n    stripeCustomerId,\n\n    customerName,\n    email,\n    userId,\n\n    totalPrice,\n    currency,\n    status,\n    orderDate,\n\n    phoneNumber,\n\n    shippingAddress {\n      name,\n      line1,\n      line2,\n      city,\n      postalCode,\n      state,\n      country\n    },\n\n    amountDiscount,\n\n    products[] {\n      _key,\n      variantKey,\n      flavor,\n      taille,\n      quantity,\n      unitPrice,\n      totalPrice,\n\n      product->{\n        _id,\n        name,\n        images,\n        slug\n      }\n    },\n\n    invoice {\n      id,\n      number,\n      hosted_invoice_url\n    }\n  }\n': MY_ORDERS_QUERY_RESULT;
     '*[_type == "product" && Day == $day] | order(name asc)': PRODUCTS_BY_DAY_QUERY_RESULT;
   }
 }

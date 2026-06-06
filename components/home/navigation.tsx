@@ -126,8 +126,13 @@ const Navigation = () => {
                         <DropdownMenuContent className='p-2 w-40'>
                             <DropdownMenuGroup>
                                 {session.user.name ?? (
-                                    <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+                                    <DropdownMenuItem>{session.user.name}</DropdownMenuItem>
                                 )}
+                                <DropdownMenuItem>
+                                    <Link href={'/orders'}>
+                                    Mes commandes
+                                    </Link>
+                                </DropdownMenuItem>
 
                                
 
