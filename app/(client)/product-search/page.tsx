@@ -21,10 +21,9 @@ const page = async () => {
           </div>
         </div>
       }>
-        <Header />
-        <Navigation />
+        
         <SearchProduct product={data} />
-        <Footer />
+        
       </Suspense>
 
     </>

@@ -1,6 +1,4 @@
-import Footer from '@/components/home/footer'
-import Header from '@/components/home/header'
-import Navigation from '@/components/home/navigation'
+
 import { CardImages } from '@/components/product-detail/card-images'
 import { ProductDescription } from '@/components/product-detail/product-description'
 import ArticleSimilar from '@/components/product-detail/simlar-arcticle'
@@ -25,12 +23,11 @@ const page = async ({params}:Props) => {
 
   return (
    <>
-   <Header/>
-   <Navigation/>
+   
    <CardImages data={product as Product}/>
    <ProductDescription data={product as Product}/>
    <ArticleSimilar data={product as Product} /> 
-   <Footer/>
+   
    
    </>
   )

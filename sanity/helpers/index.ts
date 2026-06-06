@@ -153,55 +153,61 @@ export const getMyOrders = async (userId: string) => {
   }
 
   const MY_ORDERS_QUERY = defineQuery(`
-    *[_type == "order" && clerkUserId == $userId] | order(orderDate desc) {
-      _id,
-      orderNumber,
-      stripeCheckoutSessionId,
-      stripeCustomerId,
-      clerkUserId,
-      customerName,
-      email,
+  *[_type == "order" && userId == $userId]
+  | order(orderDate desc) {
+    _id,
+    orderNumber,
+    stripeCheckoutSessionId,
+    stripePaymentIntentId,
+    stripeCustomerId,
+
+    customerName,
+    email,
+    userId,
+
+    totalPrice,
+    currency,
+    status,
+    orderDate,
+
+    phoneNumber,
+
+    shippingAddress {
+      name,
+      line1,
+      line2,
+      city,
+      postalCode,
+      state,
+      country
+    },
+
+    amountDiscount,
+
+    products[] {
+      _key,
+      variantKey,
+      flavor,
+      taille,
+      quantity,
+      unitPrice,
       totalPrice,
-      currency,
-      status,
-      orderDate,
-      shippingAddress {
+
+      product->{
+        _id,
         name,
-        line1,
-        line2,
-        city,
-        state,
-        postal_code,
-        country,
-        phone
-      },
-      shippingMethod,
-      shippingCost,
-      amountDiscount,
-      products[] {
-        _key,
-        quantity,
-        selectedSize,
-        selectedColor,
-        selectedShoesSize,
-        unitPrice,
-        price,
-        product->{
-          _id,
-          name,
-          images,
-          price,
-          currency,
-          slug
-        }
-      },
-      invoice {
-        id,
-        number,
-        hosted_invoice_url
+        images,
+        slug
       }
+    },
+
+    invoice {
+      id,
+      number,
+      hosted_invoice_url
     }
-  `);
+  }
+`);
 
   try {
     const orders = await sanityFetch({
@@ -262,3 +268,5 @@ function shuffle<T>(array: T[]): T[] {
 
   return arr;
 }
+
+
