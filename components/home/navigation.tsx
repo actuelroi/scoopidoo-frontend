@@ -34,7 +34,7 @@ import useCartStore from "@/store/carte.store";
 import { useCreateStore } from "@/store/create-account.store";
 import { Session } from "@/lib/session";
 import { BiExit } from "react-icons/bi";
-
+import { TbTruckDelivery } from "react-icons/tb";
 
 const instrumentSans = Instrument_Sans({
     variable: "--font-geist-sans",
@@ -93,10 +93,10 @@ const Navigation = () => {
 
                 <RiMenuSearchFill className="lg:hidden cursor-pointer  size-5 md:size-6" onClick={() => setIsOpen(true)} />
                 <div className="hidden lg:flex items-center gap-8 text-xs md:text-sm lg:text-[16px] ">
-                    <Link href={'/pourquoi-la-vraie'}>Pourquoi la vrai nourriture</Link>
+                    <Link href={'/'}>Pourquoi la vrai nourriture</Link>
                     <Link href={'/avis'}>Avis</Link >
-                    <Link href={'/centre-aide'}>Centre d&apos;aide</Link >
-                    <Link href={'/blog'}>Blog</Link>
+                    <Link href={'/'}>Centre d&apos;aide</Link >
+                    <Link href={'/'}>Blog</Link>
                 </div>
 
 
@@ -129,7 +129,8 @@ const Navigation = () => {
                                     <DropdownMenuItem>{session.user.name}</DropdownMenuItem>
                                 )}
                                 <DropdownMenuItem>
-                                    <Link href={'/orders'}>
+                                    <Link href={'/orders'} className="flex items-center gap-3 cursor-pointer">
+                                    <TbTruckDelivery className="size-6 text-gray-400" />
                                     Mes commandes
                                     </Link>
                                 </DropdownMenuItem>
@@ -137,8 +138,8 @@ const Navigation = () => {
                                
 
                                 <DropdownMenuItem className="w-full">
-                                    <a href="/api/signout" className="cursor-pointer flex items-center gap-2 p-3">
-                                        <BiExit className="size-4 text-red-400" />
+                                    <a href="/api/signout" className="cursor-pointer flex items-center gap-2 ">
+                                        <BiExit className="size-6 text-red-400" />
                                         <p className={`text-xs text-nowrap ${instrumentSans.className}`}>Se deconnecter</p>
                                     </a>
                                 </DropdownMenuItem>
