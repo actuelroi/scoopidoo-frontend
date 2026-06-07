@@ -7,6 +7,7 @@ const inriaSans = Inria_Sans({
 });
 
 
+
 const page = () => {
     return (
         <section className='p-8'>
