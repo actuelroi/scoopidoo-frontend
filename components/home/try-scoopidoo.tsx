@@ -1,6 +1,11 @@
+'use client'
+
 import { Inria_Sans, Irish_Grover,Inter } from "next/font/google";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import { FaCheckCircle } from "react-icons/fa";
+import { Button } from "../ui/button";
 
 
 const inriaSans = Inria_Sans({
@@ -16,6 +21,7 @@ const inter = Inter({
 
 
 const TryScoopidoo = () => {
+    const router = useRouter()
     return (
         <section className='mt-30 relative p-10 bg-linear-to-b from-[#003930] to-[#009F86] rounded-3xl min-h-screen'>
 
@@ -37,9 +43,10 @@ const TryScoopidoo = () => {
                         Amélioration des selles de mon chien en <span className="text-[#10B193]">14 jours</span>
                     </h1>
                   
-                        <p className={`text-sm py-3 text-center max-w-80 px-6 rounded-2xl bg-[#FFFAEC] text-[#01443A] cursor-pointer mb-4 mt-10 ${inriaSans.className}`}>
+                        <Button className={`text-sm py-3 text-center max-w-80 px-6 rounded-2xl bg-[#FFFAEC] text-[#01443A] cursor-pointer mb-4 mt-10 ${inriaSans.className}`} 
+                        onClick={()=>router.push('/product-search')}>
                             Essayez Scoopidoo
-                        </p>
+                        </Button>
                     
                 </div>
 
